@@ -1,13 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColoredHeaderCreator", "ColoredHeaderCreator.csproj", "{4be2d7bd-474b-1af1-10ba-c3bfe4e5193a}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{b82b5915-2894-ad74-cee0-2573c6e129fd}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColoredHeaderCreator.Editor", "ColoredHeaderCreator.Editor.csproj", "{3b7a8625-7565-35fa-285c-6e79375a8a08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-
+		{4be2d7bd-474b-1af1-10ba-c3bfe4e5193a}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4be2d7bd-474b-1af1-10ba-c3bfe4e5193a}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{b82b5915-2894-ad74-cee0-2573c6e129fd}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{b82b5915-2894-ad74-cee0-2573c6e129fd}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3b7a8625-7565-35fa-285c-6e79375a8a08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3b7a8625-7565-35fa-285c-6e79375a8a08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
