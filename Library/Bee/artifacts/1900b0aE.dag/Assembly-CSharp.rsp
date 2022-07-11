@@ -366,6 +366,7 @@
 "Assets/Mini First Person Controller/Scripts/FirstPersonLook.cs"
 "Assets/Mini First Person Controller/Scripts/FirstPersonMovement.cs"
 "Assets/Scripts/Menu.cs"
+"Assets/Scripts/ReadOnlyDraw.cs"
 -langversion:9.0
 
 /deterministic
