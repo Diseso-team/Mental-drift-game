@@ -13,18 +13,28 @@ public class Enemy : MonoBehaviour
 
     public bool drawGizmos = false; // Нужно ли отображать Gizmos
 
+    private Coroutine GLPP;
+
     private void Start()
     {
         player = EntityManager.Instance.player; // Берем объект игрока из менеджера энтити
         agent = GetComponent<NavMeshAgent>();
+        
         StartCoroutine(CheckOnPlayer());
+        GLPP =  StartCoroutine(GotoLastPlayerPos());
     }
 
-    private void Update()
-    {
-        //DrawViewState(); // Ресует угл обзора врага. Можно удалить
-    }
     #region NavMesh
+
+    public IEnumerator GotoLastPlayerPos()
+    {
+        while (true)
+        {
+            agent.SetDestination(transform.parent.GetComponent<EntityManager>().lastPlayerPos); // Идёт к месту, где игрок был lastPlayerPos 
+            yield return new WaitForSeconds(10);
+        }
+    }
+
     public IEnumerator CheckOnPlayer() // Проверяем, зашел ли игрок в зону агра врага
     {
         while (true)
@@ -34,6 +44,7 @@ public class Enemy : MonoBehaviour
             if (distanceToPlayer <= detectionDistance || distanceToPlayer <= viewDistance && IsInView())
             {
                 StartCoroutine(MoveToPlayer());
+                StopCoroutine(GLPP);
                 yield break; // завершаем корутину
             }
             yield return new WaitForSeconds(1f);
@@ -74,4 +85,6 @@ public class Enemy : MonoBehaviour
         }
     }
     #endregion
+
+
 }
