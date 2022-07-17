@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-
+using UnityEngine.SceneManagement;
 
 [Serializable]
 public struct CollapseObj
@@ -23,6 +23,12 @@ public struct CollapseObj
 }
 public class Menu : MonoBehaviour
 {
+    #region Singletoon
+    public static Menu _instance { get; private set; }
+    #endregion
+
+
+
     [Header("Menu objects")]
     [SerializeField] private CollapseObj playButton;
     [SerializeField] private CollapseObj chooseLevelButton;
@@ -30,33 +36,42 @@ public class Menu : MonoBehaviour
     [Header("Level objects")]
     [SerializeField] private CollapseObj levelPanel;
 
-    [SerializeField] private AnimationCurve curve;
+    [SerializeField] private AnimationCurve curveOpen;
     [SerializeField] private float duration;
+
+    private Tween tween;
 
     private const float span = 1;
 
+    public int currentLevelID = 1;
     private void Awake()
     {
+        _instance = this;
         playButton.InitializePos();
         chooseLevelButton.InitializePos();
         creditsButton.InitializePos();
-
         levelPanel.InitializeScale();
     }
 
     private void Start()
     {
-        OpenButton(playButton, duration, curve);
-        OpenButton(chooseLevelButton, duration, curve, 0.2f);
-        OpenButton(creditsButton, duration, curve, 0.4f);
+        OpenButton(playButton, duration, curveOpen);
+        OpenButton(chooseLevelButton, duration, curveOpen, 0.2f);
+        OpenButton(creditsButton, duration, curveOpen, 0.4f);
     }
     
-    public void Play()
+    public void Play_Button()
     {
-        CloseButton(playButton, duration/2);
-        CloseButton(chooseLevelButton, duration/2, 0.1f);
-        CloseButton(creditsButton, duration/2, 0.2f);
-        OpenLevelPanel(levelPanel, duration, curve);
+        SceneManager.LoadScene(currentLevelID);
+    }
+
+    public void ChooseLevel_Button()
+    {
+        //CloseButton(playButton, duration / 2);
+        //CloseButton(chooseLevelButton, duration / 2, 0.1f);
+        //CloseButton(creditsButton, duration / 2, 0.2f);
+        if (!levelPanel.obj.gameObject.activeSelf) OpenLevelPanel(levelPanel, duration, curveOpen);
+        else CloseLevelPanel(levelPanel, -duration/2, curveOpen);
     }
 
 
@@ -64,15 +79,18 @@ public class Menu : MonoBehaviour
     {
         a.obj.gameObject.SetActive(true);
         a.obj.localScale = Vector3.one/10;
-        a.obj.DOScale(1, duration_).SetEase(curve_);
+        tween = a.obj.DOScale(1, duration_).SetEase(curve_).OnComplete(()=> tween.Kill());
+    }
+    private void CloseLevelPanel(CollapseObj a, float duration_, AnimationCurve curve_)
+    {
+        a.obj.localScale = Vector3.one;
+        tween = a.obj.DOScale(0, duration).SetEase(curve_).OnComplete(() => { a.obj.gameObject.SetActive(false); tween.Kill();});
     }
 
     private void CloseButton(CollapseObj a, float duration_, float delay = 0)
     {
         float startX = Camera.main.ScreenToWorldPoint(Vector3.zero).x - a.obj.sizeDelta.x / 2;
-
         Vector2 posToMove = new(startX, a.obj.position.y);
-
         a.obj.DOMove(posToMove, duration_).SetDelay(delay);
     }
     private void OpenButton(CollapseObj a, float duration_, AnimationCurve curve_, float delay = 0)
